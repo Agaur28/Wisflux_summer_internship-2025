@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Node + Express App</title>
+</head>
+<body>
+  <h1>Message Board</h1>
+  <textarea id="messageBox" rows="4" cols="50" placeholder="Type your message here..."></textarea><br>
+  <button onclick="submitMessage()">Submit</button>
+  <p id="response"></p>
+
+  <script>
+    function submitMessage() {
+      const msg = document.getElementById('messageBox').value;
+      fetch('/message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: msg })
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('response').innerText = data.status;
+      });
+    }
+
+    fetch('/message')
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('messageBox').value = data.message;
+      });
+  </script>
+</body>
+</html>
